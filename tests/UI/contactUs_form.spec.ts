@@ -38,8 +38,36 @@ test("Navigate to Contact Us", async ({ page }) => {
 
   //   5. Submit the form.
   await page.locator('input[type="submit"][value="Submit"]').click();
+
   // 6. Handle the native browser confirmation dialog that appears on submit.
-  // 7. Verify the success message "Success! Your details have been submitted
-  // successfully."
+  page.on("dialog", async (dialog) => {
+    await dialog.accept();
+  });
+
+  //   await page.getByRole("button", { name: "OK" }).click();
+  await page.locator("input[type=submit]").click();
+
+  // 7. Verify the success message "Success! Your details have been submitted successfully."
+  await expect(
+    page
+      .locator("#contact-page")
+      .getByText("Success! Your details have been submitted successfully."),
+  ).toBeVisible();
+
   // 8. Click "Home" and verify the user lands back on the home page.
+  await page
+    .locator("#contact-page")
+    .getByRole("link", { name: /home/i })
+    .isVisible();
+
+  await page
+    .locator("#contact-page")
+    .getByRole("link", { name: /home/i })
+    .click();
+
+  console.log(page.url());
+  await expect(
+    page.getByRole("heading", { name: "AutomationExercise" }),
+  ).toBeVisible();
+  // await expect(page).toHaveURL("https://automationexercise.com/$/");
 });
