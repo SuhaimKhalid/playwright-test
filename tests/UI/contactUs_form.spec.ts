@@ -23,5 +23,13 @@ test("Navigate to Contact Us", async ({ page }) => {
 
   //   3. Fill in name, email, subject, and message
   await page.getByPlaceholder(/name/i).fill("Suhaim");
-  await page.getByPlaceholder(/email/i).fill("suhaimkhalid@gmail.com");
+  await page
+    .getByPlaceholder("Email", { exact: true })
+    .fill("suhaimkhalid@gmail.com");
+  await page.getByPlaceholder(/subject/i).fill("Testing Contact Us Form");
+  await page
+    .getByRole("textbox", { name: "Message" })
+    .fill("This is a msg to run tests on Contact Us Form");
+
+  //4. Upload a file as an attachment.
 });
